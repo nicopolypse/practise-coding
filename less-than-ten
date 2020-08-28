@@ -1,0 +1,73 @@
+"""
+This program is an interactive calendar the user can operate from the command line
+"""
+
+from time import sleep, strftime 
+
+USER_NAME = "Nico"
+
+calendar = {}
+
+def welcome():
+  print("Welcome " + USER_NAME + "!")
+  print("Calendar is opening!")
+  sleep(1)
+  print("Today is " + strftime("%A %B %d %Y"))
+  print("Current time is " + strftime("%H:%M:%S"))
+  sleep(1)
+  print("What would you like to do? ")
+
+
+def start_calendar():
+  welcome()
+  start = True
+  while start:
+    user_choice = input("A to Add, U to Update, V to View, D to Delete, X to Exit: ")
+    user_choice = user_choice.upper()
+    if user_choice == "V":
+      if len(calendar.keys()) < 1:
+        print("The calendar is empty! ")
+      else:
+        print(calendar)
+    elif user_choice == "U":
+      date = input("What date? ")
+      update = input("Enter the update: ")
+      calendar[date] = update
+      print("Updated! ")
+      print(calendar)
+    elif user_choice == "A":
+      event = input("Enter event: ")
+      date = input("Enter date (MM/DD/YYYY): ")
+      if(len(date) > 10) or int(date[6:]) < int(strftime("%Y")):
+        print("Invalid date entered ")
+        try_again = input("Try Again? Y for Yes, N for No: ")
+        try_again = try_again.upper()
+        if try_again == "Y":
+          continue
+        else: 
+          start = False
+      else:
+        calendar[date] = event
+        print("Event added to Calendar! ")
+        print(calendar)
+    elif user_choice == "D":
+      if len(list(calendar)) < 1:
+        print("The Calendar is empty ")
+      else: 
+        event = input("What event? ")
+        for date in calendar.keys():
+          if event == calendar[date]:
+            del calendar[date]
+            print("Event deleted! ")
+            print(calendar)
+          else: 
+            print("Incorrect Event entered! ") 
+
+    elif user_choice == "X":
+      start = False
+      print("Goodbye!")
+    else: 
+      print("Invalid entry ")
+      start = False
+
+start_calendar()
